@@ -123,7 +123,8 @@ export default function VakuApp() {
         .page-in { animation: fadeIn .3s ease; }
         .scale-in{ animation: scaleIn .25s cubic-bezier(.34,1.56,.64,1); }
 
-        .nav-btn:active { transform: scale(0.9); }
+        .nav-btn:active { transform: scale(0.88) !important; }
+        .nav-btn { transition: transform .15s; }
         .expense-card:hover .delete-btn { opacity: 1 !important; }
         .category-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px ${dark ? 'rgba(0,0,0,.5)' : 'rgba(0,0,0,.12)'} !important; }
         .category-card { transition: transform .2s, box-shadow .2s; }
@@ -142,7 +143,7 @@ export default function VakuApp() {
       <div style={{
         position: "relative", zIndex: 1,
         background: "transparent", minHeight: "100vh", maxWidth: 480, margin: "0 auto",
-        fontFamily: "'DM Sans',sans-serif", color: t.text, paddingBottom: 96,
+        fontFamily: "'DM Sans',sans-serif", color: t.text, paddingBottom: 110,
         transition: "color .35s"
       }}>
 
@@ -165,88 +166,102 @@ export default function VakuApp() {
             editBudget={editBudget} setEditBudget={setEditBudget} t={t} dark={dark} />
         )}
 
-        {/* ── FAB ── */}
-        <div style={{ position: "fixed", bottom: 88, left: "50%", transform: "translateX(-50%)", zIndex: 50 }}>
-          {/* Pulse ring */}
-          <div style={{
-            position: "absolute", top: "50%", left: "50%",
-            width: 54, height: 54, borderRadius: "50%",
-            border: `2px solid ${t.accent}`,
-            transform: "translateX(-50%) translateY(-50%)",
-            animation: "pulse-ring 2s cubic-bezier(.455,.03,.515,.955) infinite",
-            pointerEvents: "none",
-          }} />
-          <button
-            onClick={() => setShowAdd(true)}
-            style={{
-              width: 54, height: 54,
-              background: `linear-gradient(135deg,${t.accent},${t.accentB})`,
-              border: "none", borderRadius: "50%",
-              fontSize: 26, cursor: "pointer",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: `0 0 32px ${t.accent}66, 0 6px 20px ${t.shadow}`,
-              color: t.accentText, transition: "transform .2s, box-shadow .2s",
-              position: "relative",
-            }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.1)"; e.currentTarget.style.boxShadow = `0 0 48px ${t.accent}88, 0 8px 24px ${t.shadow}`; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = `0 0 32px ${t.accent}66, 0 6px 20px ${t.shadow}`; }}
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-              <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
-            </svg>
-          </button>
-        </div>
-
-        {/* ── Bottom Nav ── */}
+        {/* ── Floating Bottom Area ── */}
         <div style={{
-          position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)",
-          width: "100%", maxWidth: 480, background: t.navBg,
-          borderTop: `1px solid ${t.navBorder}`,
-          display: "flex", padding: "8px 0 20px", zIndex: 50,
-          transition: "background .35s, border-color .35s",
-          backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
+          position: "fixed", bottom: 20, left: "50%", transform: "translateX(-50%)",
+          width: "calc(100% - 40px)", maxWidth: 440,
+          zIndex: 50,
+          display: "flex", alignItems: "center", gap: 12,
         }}>
-          {NAV_ITEMS.map((item, idx) => {
-            const active = tab === item.id;
-            return (
-              <button
-                key={item.id}
-                className="nav-btn"
-                onClick={() => item.id === "ai" ? setShowAI(true) : setTab(item.id)}
-                style={{
-                  flex: 1, background: "none", border: "none", cursor: "pointer",
-                  display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
-                  padding: "6px 0", transition: "opacity .15s", position: "relative",
-                }}
-              >
-                {/* Active glow behind icon */}
-                {active && (
-                  <div style={{
-                    position: "absolute", top: 4, width: 36, height: 36, borderRadius: 12,
-                    background: `${t.accent}18`,
-                    animation: "scaleIn .2s cubic-bezier(.34,1.56,.64,1)",
-                  }} />
-                )}
-                <div style={{ position: "relative", zIndex: 1 }}>
-                  <item.Icon active={active} color={active ? t.accent : t.textFaint} />
-                </div>
-                <span style={{
-                  fontSize: 9, fontWeight: active ? 700 : 400,
-                  color: active ? t.accent : t.textFaint,
-                  letterSpacing: 0.3,
-                  fontFamily: "'Syne',sans-serif",
-                  transition: "color .2s", position: "relative", zIndex: 1,
-                }}>{item.label}</span>
-                {/* Active dot */}
-                {active && (
-                  <div style={{
-                    position: "absolute", bottom: -2, width: 4, height: 4, borderRadius: "50%",
-                    background: t.accent, animation: "scaleIn .2s ease",
-                  }} />
-                )}
-              </button>
-            );
-          })}
+
+          {/* FAB */}
+          <div style={{ position: "relative", flexShrink: 0 }}>
+            <div style={{
+              position: "absolute", inset: -6,
+              borderRadius: "50%",
+              border: `2px solid ${t.accent}44`,
+              animation: "pulse-ring 2.5s cubic-bezier(.455,.03,.515,.955) infinite",
+              pointerEvents: "none",
+            }} />
+            <button
+              onClick={() => setShowAdd(true)}
+              style={{
+                width: 52, height: 52,
+                background: `linear-gradient(135deg,${t.accent},${t.accentB})`,
+                border: "none", borderRadius: "50%",
+                cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                boxShadow: `0 0 24px ${t.accent}66, 0 4px 16px ${t.shadow}`,
+                color: t.accentText, transition: "transform .2s, box-shadow .2s",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.1)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round">
+                <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* NAV PILL */}
+          <div style={{
+            flex: 1,
+            background: dark
+              ? "rgba(12,12,12,0.88)"
+              : "rgba(255,255,255,0.88)",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+            border: `1px solid ${dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
+            borderRadius: 24,
+            display: "flex", alignItems: "center",
+            padding: "6px 6px",
+            boxShadow: dark
+              ? "0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)"
+              : "0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8)",
+            transition: "background .35s, border-color .35s, box-shadow .35s",
+          }}>
+            {NAV_ITEMS.map((item) => {
+              const active = tab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  className="nav-btn"
+                  onClick={() => item.id === "ai" ? setShowAI(true) : setTab(item.id)}
+                  style={{
+                    flex: 1, border: "none", cursor: "pointer",
+                    display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
+                    padding: "8px 4px", borderRadius: 18, position: "relative",
+                    background: active
+                      ? (dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)")
+                      : "transparent",
+                    transition: "background .25s",
+                  }}
+                >
+                  {/* Active accent top bar */}
+                  {active && (
+                    <div style={{
+                      position: "absolute", top: 4, left: "50%",
+                      transform: "translateX(-50%)",
+                      width: 20, height: 3, borderRadius: 3,
+                      background: `linear-gradient(90deg,${t.accent},${t.accentB})`,
+                      boxShadow: `0 0 8px ${t.accent}88`,
+                      animation: "scaleIn .2s cubic-bezier(.34,1.56,.64,1)",
+                    }} />
+                  )}
+                  <div style={{ marginTop: active ? 2 : 0, transition: "margin .2s" }}>
+                    <item.Icon active={active} color={active ? t.accent : t.textFaint} />
+                  </div>
+                  <span style={{
+                    fontSize: 9, fontWeight: active ? 700 : 400,
+                    color: active ? t.accent : t.textFaint,
+                    letterSpacing: 0.5,
+                    fontFamily: "'Syne',sans-serif",
+                    transition: "color .2s",
+                  }}>{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
