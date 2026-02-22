@@ -41,22 +41,28 @@ export default function HomePage({
                         <div>
                             {/* ── Logo ── */}
                             <div style={{ marginBottom: 8 }}>
-                                <img
-                                    src="/vakupy-logo.png"
-                                    alt="Vaku PY"
-                                    style={{
-                                        height: 36,
-                                        width: "auto",
-                                        display: "block",
-                                        // In dark mode: invert to white + multiply removes gray border
-                                        // In light mode: multiply removes white bg
-                                        mixBlendMode: dark ? "screen" : "multiply",
-                                        filter: dark ? "invert(1) brightness(1.2)" : "none",
-                                        opacity: 0.95,
-                                        userSelect: "none",
-                                        pointerEvents: "none",
-                                    }}
-                                />
+                                <div style={{
+                                    display: "inline-flex",
+                                    alignItems: "center",
+                                    background: "rgba(255,255,255,0.12)",
+                                    borderRadius: 12,
+                                    padding: "4px 8px 4px 4px",
+                                }}>
+                                    <img
+                                        src="/vakupy-logo.png"
+                                        alt="Vaku PY"
+                                        style={{
+                                            height: 44,
+                                            width: "auto",
+                                            display: "block",
+                                            mixBlendMode: "multiply",
+                                            background: "white",
+                                            borderRadius: 8,
+                                            userSelect: "none",
+                                            pointerEvents: "none",
+                                        }}
+                                    />
+                                </div>
                             </div>
 
                             <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
