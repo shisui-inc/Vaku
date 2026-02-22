@@ -39,6 +39,26 @@ export default function HomePage({
 
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", position: "relative" }}>
                         <div>
+                            {/* ── Logo ── */}
+                            <div style={{ marginBottom: 8 }}>
+                                <img
+                                    src="/vakupy-logo.png"
+                                    alt="Vaku PY"
+                                    style={{
+                                        height: 36,
+                                        width: "auto",
+                                        display: "block",
+                                        // In dark mode: invert to white + multiply removes gray border
+                                        // In light mode: multiply removes white bg
+                                        mixBlendMode: dark ? "screen" : "multiply",
+                                        filter: dark ? "invert(1) brightness(1.2)" : "none",
+                                        opacity: 0.95,
+                                        userSelect: "none",
+                                        pointerEvents: "none",
+                                    }}
+                                />
+                            </div>
+
                             <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
                                 <div style={{
                                     width: 7, height: 7, borderRadius: "50%",
